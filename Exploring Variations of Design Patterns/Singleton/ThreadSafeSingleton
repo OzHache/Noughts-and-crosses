@@ -1,0 +1,33 @@
+public class ThreadSafeSingleton
+{
+    private static ThreadSafeSingleton _instance;
+    private static readonly object _lock = new object();
+
+    // Private constructor ensures no external instantiation.
+    private ThreadSafeSingleton() {}
+
+    // Public method to access the singleton instance.
+    public static ThreadSafeSingleton Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                lock (_lock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new ThreadSafeSingleton();
+                    }
+                }
+            }
+            return _instance;
+        }
+    }
+
+    // Example method to demonstrate functionality.
+    public void DoSomething() { }
+}
+
+// Comments: This implementation uses double-check locking to ensure that only one instance is created even in a multithreaded environment.
+// It's more complex but necessary for applications where multiple threads might access the singleton concurrently.
